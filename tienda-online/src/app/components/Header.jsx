@@ -1,22 +1,27 @@
 import React from "react";
+import { Invoice } from "./Invoice";
 
 export const Headers = ({ allProducts, setAllProducts, total, countProducts, setCountProducts, setTotal }) => {
-    const [active, setActive] = React.useState(false);
+    const [active, setActive] = React.useState(false);//estado para mostrar u ocultar el carrito
+    const [showInvoice, setShowInvoice] = React.useState(false);//estado para mostrar u ocultar la factura
+
 
     const onDeleteProduct = (product) => {
         if (window.confirm(`Esta seguro de eliminar ${product.title} del carrito?`)) {
-            const results = allProducts.filter(item => item.id !== product.id);
-            setTotal(total - product.price * product.quantity);
-            setCountProducts(countProducts - product.quantity);
+            const results = allProducts.filter(item => item.id !== product.id);//se filtran los productos que no sean iguales al producto seleccionado
+            setTotal(total - product.price * product.quantity);//se resta el precio del producto seleccionado al total
+            setCountProducts(countProducts - product.quantity);//se resta la cantidad de productos seleccionados
             setAllProducts(results);
         }
     };
 
     const onCleanCart = () => {
+        
         if (window.confirm("Esta seguro de vaciar el carrito?")) {
             setAllProducts([]);
             setTotal(0);
             setCountProducts(0);
+
         }
     };
 
@@ -63,6 +68,7 @@ export const Headers = ({ allProducts, setAllProducts, total, countProducts, set
                                     <strong>Total: ${total}</strong>
                                     <button className="btn btn-danger" onClick={onCleanCart}>Vaciar Carrito</button>
                                 </div>
+                                <button className="btn btn-success mt-3" onClick={() => setShowInvoice(true)} disabled={allProducts.length === 0}>Generar Factura</button>
                             </>
                         ) : (
                             <p className="text-center">El carrito está vacío</p>
@@ -70,6 +76,7 @@ export const Headers = ({ allProducts, setAllProducts, total, countProducts, set
                     </div>
                 </div>
             </div>
+            {showInvoice && <Invoice allProducts={allProducts} total={total} />}
         </header>
     );
 };

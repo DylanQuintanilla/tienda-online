@@ -3,15 +3,15 @@ import { data } from "../data";
 
 export const ProductList = ({ allProducts, setAllProducts, countProducts, setCountProducts, total, setTotal }) => {
     const onAddProduct = (product) => {
-        if (allProducts.find(item => item.id === product.id)) {
+        if (allProducts.find(item => item.id === product.id)) {//se verifica si el producto ya esta en el carrito
             const products = allProducts.map(item =>
-                item.id === product.id
+               item.id === product.id //si el producto ya esta en el carrito se aumenta la cantidad
                     ? { ...item, quantity: item.quantity + 1 }
                     : item
             );
             setTotal(total + product.price);
             setCountProducts(countProducts + 1);
-            return setAllProducts([...products]);
+            return setAllProducts([...products]);//se actualiza el estado de los productos
         }
 
         setTotal(total + product.price);
